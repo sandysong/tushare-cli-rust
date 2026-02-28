@@ -1,0 +1,177 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            arch: x64
+          - os: macos-latest
+            platform: darwin
+            arch: x64
+          - os: macos-latest
+            platform: darwin
+            arch: arm64
+          - os: windows-latest
+            platform: win32
+            arch: x64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform }}-${{ matrix.arch }}
+
+      - name: Build release
+        run: cargo build --release --target ${{ matrix.platform }}-${{ matrix.arch }}
+
+      - name: Prepare artifact
+        run: |
+          mkdir -p dist
+          if [ "${{ matrix.platform }}" = "win32" ]; then
+            cp ${{ matrix.platform }}-${{ matrix.arch }}/release/tushare.exe dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}.exe
+          else
+            cp ${{ matrix.platform }}-${{ matrix.arch }}/release/tushare dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}
+            chmod +x dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}
+          fi
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tushare-${{ matrix.platform }}-${{ matrix.arch }}
+          path: dist/*
+
+  package:
+    name: Package Skills
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create skill packages
+        run: |
+          mkdir -p release
+
+          # Package for each platform
+          for platform_arch in darwin-x64 darwin-arm64 linux-x64 win32-x64; do
+            # Create skill directory structure
+            mkdir -p skill-temp/scripts
+            mkdir -p skill-temp/references
+
+            # Copy SKILL.md and references
+            cp skill/SKILL.md skill-temp/
+            cp -r skill/references/* skill-temp/references/
+
+            # Copy executable
+            if [[ "$platform_arch" == *"win32"* ]]; then
+              cp artifacts/tushare-$platform_arch/tushare-$platform_arch.exe skill-temp/scripts/tushare.exe
+            else
+              cp artifacts/tushare-$platform_arch/tushare-$platform_arch skill-temp/scripts/tushare
+              chmod +x skill-temp/scripts/tushare
+            fi
+
+            # Create .skill file (zip archive)
+            cd skill-temp
+            zip -r ../release/tushare-cli-rust-$platform_arch.skill .
+            cd ..
+            rm -rf skill-temp
+          done
+
+      - name: Upload skill packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-packages
+          path: release/*.skill
+
+  release:
+    name: Create Release
+    needs: [build, package]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Tushare CLI Rust ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## 🎉 Release ${{ steps.get_version.outputs.VERSION }}
+
+            ### 📥 下载说明
+
+            请根据您的操作系统下载对应的 `.skill` 文件：
+
+            | 平台 | 文件 | 说明 |
+            |------|------|------|
+            | macOS (Intel) | `tushare-cli-rust-darwin-x64.skill` | Intel Mac |
+            | macOS (Apple Silicon) | `tushare-cli-rust-darwin-arm64.skill` | M1/M2/M3 Mac |
+            | Linux (x64) | `tushare-cli-rust-linux-x64.skill` | Ubuntu, Debian 等 |
+            | Windows (x64) | `tushare-cli-rust-win32-x64.skill` | Windows 10/11 |
+
+            ### 🚀 一键安装
+
+            **macOS/Linux**:
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/sandysong/tushare-cli-rust/main/install.sh | bash
+            ```
+
+            **Windows PowerShell**:
+            ```powershell
+            iex (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/sandysong/tushare-cli-rust/main/install.ps1" -UseBasicParsing).Content
+            ```
+
+            ### ✨ 功能特点
+
+            - ✅ 支持 238 个 Tushare Pro API 接口
+            - ✅ 零依赖部署，单一可执行文件（2.3MB）
+            - ✅ 多种输出格式：JSON、Table、CSV、Markdown
+            - ✅ 自动参数转换（kebab-case → snake_case）
+            - ✅ 跨平台支持
+            - ✅ 完整的 Claude Code skill 集成
+
+            ### 📊 更新内容
+
+            请查看 [CHANGELOG](https://github.com/sandysong/tushare-cli-rust/blob/main/CHANGELOG.md)
+          files: |
+            artifacts/skill-packages/*.skill
+            artifacts/tushare-*/tushare-*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
