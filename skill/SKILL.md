@@ -10,10 +10,8 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 ## CLI 工具路径
 
 ```
-./skill/scripts/tushare
+./scripts/tushare
 ```
-
-**重要**：CLI 工具位于项目根目录的 `skill/scripts/tushare`。
 
 ## 📋 数据覆盖
 
@@ -51,7 +49,7 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 ### 基本格式
 
 ```bash
-./skill/scripts/tushare <接口名> [参数] [选项]
+./scripts/tushare <接口名> [参数] [选项]
 ```
 
 ### 通用选项
@@ -112,7 +110,7 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # 示例：直接执行查询
-./skill/scripts/tushare daily \
+./scripts/tushare daily \
   --ts-code 000725.SZ \
   --start-date 20240201 \
   --end-date 20250228 \
@@ -141,7 +139,7 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # 获取股票基本信息
-./skill/scripts/tushare stock_basic \
+./scripts/tushare stock_basic \
   --ts-code 000725.SZ \
   --format markdown
 ```
@@ -150,26 +148,26 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # 获取日线数据（推荐用 csv 格式便于处理）
-./skill/scripts/tushare daily \
+./scripts/tushare daily \
   --ts-code 000725.SZ \
   --start-date 20240201 \
   --end-date 20250228 \
   --format csv
 
 # 获取特定日期的全市场行情
-./skill/scripts/tushare daily \
+./scripts/tushare daily \
   --trade-date 20240228 \
   --format markdown
 
 # 获取周线数据
-./skill/scripts/tushare weekly \
+./scripts/tushare weekly \
   --ts-code 000725.SZ \
   --start-date 20230101 \
   --end-date 20231231 \
   --format csv
 
 # 获取月线数据
-./skill/scripts/tushare monthly \
+./scripts/tushare monthly \
   --ts-code 000725.SZ \
   --start-date 20220101 \
   --end-date 20231231 \
@@ -180,26 +178,26 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # 获取利润表
-./skill/scripts/tushare income \
+./scripts/tushare income \
   --ts-code 000725.SZ \
   --start-date 20230101 \
   --end-date 20231231 \
   --format markdown
 
 # 获取资产负债表
-./skill/scripts/tushare balancesheet \
+./scripts/tushare balancesheet \
   --ts-code 000725.SZ \
   --period 20231231 \
   --format markdown
 
 # 获取现金流量表
-./skill/scripts/tushare cashflow \
+./scripts/tushare cashflow \
   --ts-code 000725.SZ \
   --period 20231231 \
   --format markdown
 
 # 获取财务指标
-./skill/scripts/tushare fina_indicator \
+./scripts/tushare fina_indicator \
   --ts-code 000725.SZ \
   --start-date 20230101 \
   --end-date 20231231 \
@@ -210,12 +208,12 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # 获取指数基本信息
-./skill/scripts/tushare index_basic \
+./scripts/tushare index_basic \
   --market SSE \
   --format markdown
 
 # 获取指数日线数据
-./skill/scripts/tushare index_daily \
+./scripts/tushare index_daily \
   --ts-code 000001.SH \
   --start-date 20240201 \
   --format csv
@@ -225,12 +223,12 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # 获取基金列表
-./skill/scripts/tushare fund_basic \
+./scripts/tushare fund_basic \
   --market E \
   --format markdown
 
 # 获取基金净值
-./skill/scripts/tushare fund_nav \
+./scripts/tushare fund_nav \
   --ts-code 165509.SZ \
   --start-date 20240201 \
   --format csv
@@ -240,29 +238,29 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # GDP 数据
-./skill/scripts/tushare cn_gdp --format markdown
+./scripts/tushare cn_gdp --format markdown
 
 # CPI 数据
-./skill/scripts/tushare cn_cpi --format markdown
+./scripts/tushare cn_cpi --format markdown
 
 # PPI 数据
-./skill/scripts/tushare cn_ppi --format markdown
+./scripts/tushare cn_ppi --format markdown
 
 # Shibor 利率
-./skill/scripts/tushare shibor --format markdown
+./scripts/tushare shibor --format markdown
 ```
 
 ### 搜索和帮助
 
 ```bash
 # 列出所有接口
-./skill/scripts/tushare list
+./scripts/tushare list
 
 # 搜索接口
-./skill/scripts/tushare search 股票
+./scripts/tushare search 股票
 
 # 查看接口详情
-./skill/scripts/tushare help daily
+./scripts/tushare help daily
 ```
 
 ## 错误处理
@@ -311,7 +309,7 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 **解决方案**：
 1. 使用 `help` 命令查看接口文档：
    ```bash
-   ./skill/scripts/tushare help <接口名>
+   ./scripts/tushare help <接口名>
    ```
 2. 检查参数格式：
    - 日期：YYYYMMDD（如 20240228）
@@ -327,7 +325,7 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 使用 CSV 格式获取数据：
 
 ```bash
-./skill/scripts/tushare daily \
+./scripts/tushare daily \
   --ts-code 000725.SZ \
   --start-date 20240201 \
   --end-date 20250228 \
@@ -340,7 +338,7 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 
 ```bash
 # 计算移动平均线
-./skill/scripts/tushare daily \
+./scripts/tushare daily \
   --ts-code 000725.SZ \
   --start-date 20240201 \
   --end-date 20250228 \
@@ -394,7 +392,7 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
    - 展示给用户 → 用 `markdown`
    - 需要处理 → 用 `csv`
    - 调试时 → 用 `table`
-3. **路径统一**：始终使用 `./skill/scripts/tushare` 相对路径
+3. **路径统一**：始终使用 `./scripts/tushare` 相对路径
 4. **合理设置日期范围**：避免请求过多数据
 5. **错误友好提示**：遇到错误时，清楚说明原因和解决方案
 6. **避免脚本化**：不要创建 Python 脚本，使用命令行工具或直接展示数据
