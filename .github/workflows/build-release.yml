@@ -37,6 +37,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.platform }}-${{ matrix.arch }}
+          mod: bare
 
       - name: Build release
         run: cargo build --release --target ${{ matrix.platform }}-${{ matrix.arch }}
