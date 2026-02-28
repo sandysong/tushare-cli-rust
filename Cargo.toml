@@ -1,0 +1,48 @@
+[package]
+name = "tushare"
+version = "2.0.0"
+edition = "2021"
+authors = ["Sandy Song <sandysong@gmail.com>"]
+description = "Tushare Pro CLI - 获取中国金融市场数据的命令行工具"
+license = "MIT"
+repository = "https://github.com/sandysong/tushare-skill"
+readme = "README.md"
+keywords = ["tushare", "finance", "cli", "api", "stock"]
+categories = ["command-line-utilities", "api-bindings"]
+
+[dependencies]
+# HTTP 客户端（使用 rustls-tls 避免依赖 OpenSSL）
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+# 异步运行时
+tokio = { version = "1.40", features = ["full"] }
+# 序列化
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# 环境变量
+dotenvy = "0.15"
+# 错误处理
+anyhow = "1.0"
+thiserror = "1.0"
+# 表格输出
+comfy-table = "7.1"
+# 日期时间处理
+chrono = { version = "0.4", default-features = false, features = ["std", "clock"] }
+
+[dev-dependencies]
+# 测试
+tokio-test = "0.4"
+
+[lib]
+name = "tushare"
+path = "src/lib.rs"
+
+[[bin]]
+name = "tushare"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = "z"      # 优化体积
+lto = true           # 链接时优化
+codegen-units = 1    # 单个编译单元
+panic = "abort"      # 使用 abort 减小体积
+strip = true         # 移除调试信息
