@@ -17,15 +17,19 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
             platform: linux
             arch: x64
           - os: macos-13
+            target: x86_64-apple-darwin
             platform: darwin
             arch: x64
           - os: macos-latest
+            target: aarch64-apple-darwin
             platform: darwin
             arch: arm64
           - os: windows-latest
+            target: x86_64-pc-windows-msvc
             platform: win32
             arch: x64
 
@@ -36,19 +40,18 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.platform }}-${{ matrix.arch }}
-          mod: bare
+          targets: ${{ matrix.target }}
 
       - name: Build release
-        run: cargo build --release --target ${{ matrix.platform }}-${{ matrix.arch }}
+        run: cargo build --release --target ${{ matrix.target }}
 
       - name: Prepare artifact
         run: |
           mkdir -p dist
           if [ "${{ matrix.platform }}" = "win32" ]; then
-            cp ${{ matrix.platform }}-${{ matrix.arch }}/release/tushare.exe dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}.exe
+            cp ${{ matrix.target }}/release/tushare.exe dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}.exe
           else
-            cp ${{ matrix.platform }}-${{ matrix.arch }}/release/tushare dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}
+            cp ${{ matrix.target }}/release/tushare dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}
             chmod +x dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}
           fi
         shell: bash
