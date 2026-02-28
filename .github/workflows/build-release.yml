@@ -65,40 +65,27 @@ jobs:
         run: |
           mkdir -p dist
 
-          # Try multiple possible binary locations (native vs cross-compile)
-          BINARY_PATH=""
+          # Use find to locate the binary, regardless of directory structure
           if [ "${{ matrix.platform }}" = "win32" ]; then
-            # Windows
-            if [ -f "target/release/tushare.exe" ]; then
-              BINARY_PATH="target/release/tushare.exe"
-            elif [ -f "${{ matrix.target }}/release/tushare.exe" ]; then
-              BINARY_PATH="${{ matrix.target }}/release/tushare.exe"
-            fi
+            BINARY_PATH=$(find target -type f -name "tushare.exe" | head -1)
             if [ -z "$BINARY_PATH" ]; then
               echo "ERROR: tushare.exe not found!"
-              echo "=== Searching for binaries ==="
-              find target -name "tushare.exe" -o -name "tushare" 2>/dev/null || echo "No binaries found"
               exit 1
             fi
             cp "$BINARY_PATH" "dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}.exe"
           else
-            # Unix-like systems
-            if [ -f "target/release/tushare" ]; then
-              BINARY_PATH="target/release/tushare"
-            elif [ -f "${{ matrix.target }}/release/tushare" ]; then
-              BINARY_PATH="${{ matrix.target }}/release/tushare"
-            fi
+            BINARY_PATH=$(find target -type f -name "tushare" | head -1)
             if [ -z "$BINARY_PATH" ]; then
               echo "ERROR: tushare binary not found!"
-              echo "=== Searching for binaries ==="
-              find target -name "tushare" 2>/dev/null || echo "No binaries found"
+              echo "=== Contents of target directory ==="
+              ls -laR target/ || echo "target/ not found"
               exit 1
             fi
             cp "$BINARY_PATH" "dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}"
             chmod +x "dist/tushare-${{ matrix.platform }}-${{ matrix.arch }}"
           fi
 
-          echo "Successfully copied to dist/"
+          echo "✓ Successfully copied $BINARY_PATH to dist/"
           ls -la dist/
         shell: bash
 
