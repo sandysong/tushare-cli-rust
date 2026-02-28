@@ -20,7 +20,7 @@ jobs:
             target: x86_64-unknown-linux-gnu
             platform: linux
             arch: x64
-          - os: macos-13
+          - os: macos-12
             target: x86_64-apple-darwin
             platform: darwin
             arch: x64
@@ -44,6 +44,12 @@ jobs:
 
       - name: Build release
         run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Show build output
+        run: |
+          echo "Target directory structure:"
+          ls -la ${{ matrix.target }}/release/ || echo "Directory not found"
+        shell: bash
 
       - name: Prepare artifact
         run: |
