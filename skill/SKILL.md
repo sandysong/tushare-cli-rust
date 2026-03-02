@@ -44,6 +44,92 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 - **自动参数转换**：支持 kebab-case 到 snake_case 的自动转换
 - **智能搜索**：支持按关键词搜索接口
 
+## 🚨 关键原则
+
+### ⚠️ 必须先定位接口，不要猜测！
+
+**Tushare 有 238 个接口，绝对不要猜测接口名称！** 必须先查看可用接口：
+
+```bash
+# ⚠️ 步骤 1: 查看所有接口（按类别分组，显示名称和用途）
+~/.claude/skills/tushare-cli/scripts/tushare list
+
+# ⚠️ 步骤 2: 搜索相关接口（使用关键词）
+~/.claude/skills/tushare-cli/scripts/tushare search <关键词>
+
+# ⚠️ 步骤 3: 查看接口详细文档（参数、输出字段等）
+~/.claude/skills/tushare-cli/scripts/tushare help <接口名>
+```
+
+**错误示例**（不要这样做）：
+- ❌ 直接猜测接口名：`tushare realtime_quote --ts-code ...`（接口名错误）
+- ❌ 直接猜测接口名：`tushare stock_realtime --ts-code ...`（接口名错误）
+
+**正确示例**：
+- ✅ 先运行：`tushare search 实时`
+- ✅ 找到正确接口：`rt_idx_k`（指数实时日线）
+- ✅ 查看文档：`tushare help rt_idx_k`
+- ✅ 正确调用：`tushare rt_idx_k --ts-code 000001.SH`
+
+### ⚠️ 不要预检查 Token
+
+**直接执行命令**，不要预先询问或检查 Token 配置。如果 Token 未配置，工具会返回明确的错误信息。
+
+## 工作流程
+
+当用户请求获取金融数据时，**严格**遵循以下流程：
+
+### 1. 理解需求
+
+- 用户需要什么类型的数据？（股票、基金、宏观经济等）
+- 具体的查询参数？（股票代码、日期范围等）
+- 数据用途？（直接展示、技术分析、对比研究）
+
+### 2. ⚠️ 定位正确的接口（必需步骤）
+
+**在调用任何接口之前，必须先定位正确的接口**：
+
+```bash
+# 步骤 2.1: 查看所有接口（快速了解可用接口）
+~/.claude/skills/tushare-cli/scripts/tushare list
+
+# 步骤 2.2: 搜索相关接口（使用关键词缩小范围）
+~/.claude/skills/tushare-cli/scripts/tushare search <关键词>
+
+# 步骤 2.3: 查看接口文档（确认参数和输出字段）
+~/.claude/skills/tushare-cli/scripts/tushare help <接口名>
+```
+
+**重要**：这个步骤确保你使用了正确的接口名称和参数，避免 40101 错误。
+
+### 3. 直接执行查询
+
+**确定正确的接口后**，直接执行命令，不要预先询问或检查 Token 配置。
+
+```bash
+# 示例：直接执行查询
+~/.claude/skills/tushare-cli/scripts/tushare <接口名> \
+  --参数1 值1 \
+  --参数2 值2 \
+  --format markdown
+```
+
+### 4. 处理结果
+
+- **成功**：直接展示数据/进行分析
+- **Token 错误**：提示用户配置 Token（见错误处理部分）
+- **权限错误**：提示用户积分不足
+- **参数错误**：使用 `help` 命令检查参数格式并重试
+
+### 5. 数据分析（如需要）
+
+对于需要分析的场景（如技术指标分析）：
+1. 使用 `--format csv` 获取数据
+2. 使用命令行工具（如 `awk`、`csvtool`）进行分析
+3. 或者直接展示数据并提供分析思路
+
+**不要**：编写 Python 脚本或创建临时文件进行处理
+
 ## 命令格式
 
 ### 基本格式
@@ -94,173 +180,48 @@ description: 使用 Tushare CLI 工具获取中国金融市场数据。支持 23
 | GDP数据 | `cn_gdp` | 国内生产总值 |
 | CPI数据 | `cn_cpi` | 居民消费价格指数 |
 
-## 工作流程
-
-当用户请求获取金融数据时，遵循以下流程：
-
-### 1. 理解需求
-
-- 用户需要什么类型的数据？（股票、基金、宏观经济等）
-- 具体的查询参数？（股票代码、日期范围等）
-- 数据用途？（直接展示、技术分析、对比研究）
-
-### 2. 直接执行查询（不要预检查 Token）
-
-**重要**：直接执行命令，不要预先询问或检查 Token 配置。
-
-```bash
-# 示例：直接执行查询
-~/.claude/skills/tushare-cli/scripts/tushare daily \
-  --ts-code 000725.SZ \
-  --start-date 20240201 \
-  --end-date 20250228 \
-  --format csv
-```
-
-### 3. 处理结果
-
-- **成功**：直接展示数据或进行分析
-- **Token 错误**：提示用户配置 Token（见错误处理部分）
-- **权限错误**：提示用户积分不足
-- **参数错误**：检查参数格式并重试
-
-### 4. 数据分析（如需要）
-
-对于需要分析的场景（如技术指标分析）：
-1. 使用 `--format csv` 获取数据
-2. 使用命令行工具（如 `awk`、`csvtool`）进行分析
-3. 或者直接展示数据并提供分析思路
-
-**不要**：编写 Python 脚本或创建临时文件进行处理
-
 ## 使用示例
 
-### 股票基础信息
+### 基础查询示例
 
+**示例 1: 获取股票基本信息**
 ```bash
-# 获取股票基本信息
-~/.claude/skills/tushare-cli/scripts/tushare stock_basic \
-  --ts-code 000725.SZ \
-  --format markdown
+# 步骤 1: 搜索接口
+~/.claude/skills/tushare-cli/scripts/tushare search 股票基础
+
+# 步骤 2: 查看接口文档
+~/.claude/skills/tushare-cli/scripts/tushare help stock_basic
+
+# 步骤 3: 执行查询
+~/.claude/skills/tushare-cli/scripts/tushare stock_basic --ts-code 000001.SZ --format markdown
 ```
 
-### 行情数据
-
+**示例 2: 获取股票日线行情**
 ```bash
-# 获取日线数据（推荐用 csv 格式便于处理）
+# 步骤 1: 搜索接口
+~/.claude/skills/tushare-cli/scripts/tushare search 日线
+
+# 步骤 2: 查看接口文档
+~/.claude/skills/tushare-cli/scripts/tushare help daily
+
+# 步骤 3: 执行查询
 ~/.claude/skills/tushare-cli/scripts/tushare daily \
-  --ts-code 000725.SZ \
+  --ts-code 000001.SZ \
   --start-date 20240201 \
   --end-date 20250228 \
-  --format csv
-
-# 获取特定日期的全市场行情
-~/.claude/skills/tushare-cli/scripts/tushare daily \
-  --trade-date 20240228 \
-  --format markdown
-
-# 获取周线数据
-~/.claude/skills/tushare-cli/scripts/tushare weekly \
-  --ts-code 000725.SZ \
-  --start-date 20230101 \
-  --end-date 20231231 \
-  --format csv
-
-# 获取月线数据
-~/.claude/skills/tushare-cli/scripts/tushare monthly \
-  --ts-code 000725.SZ \
-  --start-date 20220101 \
-  --end-date 20231231 \
-  --format csv
-```
-
-### 财务数据
-
-```bash
-# 获取利润表
-~/.claude/skills/tushare-cli/scripts/tushare income \
-  --ts-code 000725.SZ \
-  --start-date 20230101 \
-  --end-date 20231231 \
-  --format markdown
-
-# 获取资产负债表
-~/.claude/skills/tushare-cli/scripts/tushare balancesheet \
-  --ts-code 000725.SZ \
-  --period 20231231 \
-  --format markdown
-
-# 获取现金流量表
-~/.claude/skills/tushare-cli/scripts/tushare cashflow \
-  --ts-code 000725.SZ \
-  --period 20231231 \
-  --format markdown
-
-# 获取财务指标
-~/.claude/skills/tushare-cli/scripts/tushare fina_indicator \
-  --ts-code 000725.SZ \
-  --start-date 20230101 \
-  --end-date 20231231 \
   --format markdown
 ```
 
-### 指数数据
-
+**示例 3: 获取指数实时行情**
 ```bash
-# 获取指数基本信息
-~/.claude/skills/tushare-cli/scripts/tushare index_basic \
-  --market SSE \
-  --format markdown
+# 步骤 1: 搜索接口
+~/.claude/skills/tushare-cli/scripts/tushare search 实时指数
 
-# 获取指数日线数据
-~/.claude/skills/tushare-cli/scripts/tushare index_daily \
-  --ts-code 000001.SH \
-  --start-date 20240201 \
-  --format csv
-```
+# 步骤 2: 查看接口文档
+~/.claude/skills/tushare-cli/scripts/tushare help rt_idx_k
 
-### 基金数据
-
-```bash
-# 获取基金列表
-~/.claude/skills/tushare-cli/scripts/tushare fund_basic \
-  --market E \
-  --format markdown
-
-# 获取基金净值
-~/.claude/skills/tushare-cli/scripts/tushare fund_nav \
-  --ts-code 165509.SZ \
-  --start-date 20240201 \
-  --format csv
-```
-
-### 宏观经济数据
-
-```bash
-# GDP 数据
-~/.claude/skills/tushare-cli/scripts/tushare cn_gdp --format markdown
-
-# CPI 数据
-~/.claude/skills/tushare-cli/scripts/tushare cn_cpi --format markdown
-
-# PPI 数据
-~/.claude/skills/tushare-cli/scripts/tushare cn_ppi --format markdown
-
-# Shibor 利率
-~/.claude/skills/tushare-cli/scripts/tushare shibor --format markdown
-```
-
-### 搜索和帮助
-
-```bash
-# 列出所有接口
-~/.claude/skills/tushare-cli/scripts/tushare list
-
-# 搜索接口
-~/.claude/skills/tushare-cli/scripts/tushare search 股票
-
-# 查看接口详情
-~/.claude/skills/tushare-cli/scripts/tushare help daily
+# 步骤 3: 执行查询
+~/.claude/skills/tushare-cli/scripts/tushare rt_idx_k --ts-code 000001.SH --format markdown
 ```
 
 ## 错误处理

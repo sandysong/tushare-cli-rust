@@ -231,21 +231,32 @@ fn list_apis(category: Option<&str>) {
             }
         }
     } else {
-        // 列出所有类别及其接口数量
+        // 列出所有类别及其接口
         let mut category_counts: std::collections::HashMap<&str, usize> = std::collections::HashMap::new();
+        let mut category_apis: std::collections::HashMap<&str, Vec<&crate::api::ApiDefinition>> = std::collections::HashMap::new();
+
         for api in definitions.values() {
             *category_counts.entry(&api.category).or_insert(0) += 1;
+            category_apis.entry(&api.category).or_insert_with(Vec::new).push(api);
         }
 
         println!("所有 API 接口 (共 {} 个)", definitions.len());
         println!();
+
+        // 按类别显示所有接口
         for cat in get_categories() {
             if let Some(&count) = category_counts.get(cat) {
-                println!("  {:<15} {}", cat, count);
+                println!("## {} ({} 个接口)", cat, count);
+                if let Some(apis) = category_apis.get(cat) {
+                    for api in apis {
+                        let description = clean_description(&api.description);
+                        println!("  {:<25} {}", api.name, description);
+                    }
+                }
+                println!();
             }
         }
-        println!();
-        println!("使用 'tushare list <类别>' 查看具体接口");
+
         println!("使用 'tushare help <接口名>' 查看接口详情");
         println!("使用 'tushare search <关键词>' 搜索接口");
     }
