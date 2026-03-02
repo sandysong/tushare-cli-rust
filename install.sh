@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # 版本号
-VERSION="${VERSION:-v1.0.0}"
+VERSION="${VERSION:-v1.0.1}"
 REPO_URL="https://github.com/sandysong/tushare-cli-rust"
 RELEASE_URL="${REPO_URL}/releases/download/${VERSION}"
 

@@ -3,7 +3,7 @@
 $ErrorActionPreference = "Stop"
 
 # 版本号
-$VERSION = if ($env:VERSION) { $env:VERSION } else { "v1.0.0" }
+$VERSION = if ($env:VERSION) { $env:VERSION } else { "v1.0.1" }
 $REPO_URL = "https://github.com/sandysong/tushare-cli-rust"
 $RELEASE_URL = "$REPO_URL/releases/download/$VERSION"
 

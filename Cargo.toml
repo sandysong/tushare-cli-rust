@@ -1,6 +1,6 @@
 [package]
 name = "tushare"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 authors = ["Sandy Song <sandysong@gmail.com>"]
 description = "Tushare Pro CLI - 获取中国金融市场数据的命令行工具"
