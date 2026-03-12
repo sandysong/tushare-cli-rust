@@ -947,15 +947,6 @@
     ],
     "outputFields": []
   },
-  "suspend": {
-    "name": "suspend",
-    "description": "suspend 接口",
-    "category": "股票数据",
-    "docId": 0,
-    "parameters": [],
-    "outputFields": [],
-    "requiresPoints": null
-  },
   "suspend_d": {
     "name": "suspend_d",
     "description": "按日期方式获取股票每日停复牌信息",
@@ -1123,100 +1114,6 @@
         "type": "float",
         "defaultShow": true,
         "description": "昨收价"
-      }
-    ]
-  },
-  "stk_factor": {
-    "name": "stk_factor",
-    "description": "获取股票每日技术面因子数据，用于跟踪股票当前走势情况，数据由Tushare社区自产，覆盖全历史限量：单次最大10000条，可以循环或者分页提取积分：5000积分每分钟可以请求100次，8000积分以上每分钟500次，具体请参阅积分获取办法",
-    "category": "股票数据",
-    "docId": 296,
-    "parameters": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "required": false,
-        "description": "股票代码"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "required": false,
-        "description": "交易日期 （yyyymmdd，下同）"
-      },
-      {
-        "name": "start_date",
-        "type": "str",
-        "required": false,
-        "description": "开始日期"
-      },
-      {
-        "name": "end_date",
-        "type": "str",
-        "required": false,
-        "description": "结束日期"
-      }
-    ],
-    "outputFields": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "defaultShow": true,
-        "description": "股票代码"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "defaultShow": true,
-        "description": "交易日期"
-      },
-      {
-        "name": "close",
-        "type": "float",
-        "defaultShow": true,
-        "description": "收盘价"
-      },
-      {
-        "name": "open",
-        "type": "float",
-        "defaultShow": true,
-        "description": "开盘价"
-      },
-      {
-        "name": "high",
-        "type": "float",
-        "defaultShow": true,
-        "description": "最高价"
-      },
-      {
-        "name": "low",
-        "type": "float",
-        "defaultShow": true,
-        "description": "最低价"
-      },
-      {
-        "name": "pre_close",
-        "type": "float",
-        "defaultShow": true,
-        "description": "昨收价"
-      },
-      {
-        "name": "change",
-        "type": "float",
-        "defaultShow": true,
-        "description": "涨跌额"
-      },
-      {
-        "name": "pct_change",
-        "type": "float",
-        "defaultShow": true,
-        "description": "涨跌幅"
-      },
-      {
-        "name": "vol",
-        "type": "float",
-        "defaultShow": true,
-        "description": "成交量 （手）"
       }
     ]
   },
@@ -6302,15 +6199,6 @@
       }
     ]
   },
-  "etf_daily": {
-    "name": "etf_daily",
-    "description": "etf_daily 接口",
-    "category": "基金数据",
-    "docId": 0,
-    "parameters": [],
-    "outputFields": [],
-    "requiresPoints": null
-  },
   "etf_share_size": {
     "name": "etf_share_size",
     "description": "获取沪深ETF每日份额和规模数据，能体现规模份额的变化，掌握ETF资金动向，同时提供每日净值和收盘价；数据指标是分批入库，建议在每日19点后提取；另外，涉及海外的ETF数据更新会晚一些属于正常情况。限量：单次最大5000条，可根据代码或日期循环提取积分：需要8000积分可以调取，具体请参阅积分获取办法",
@@ -9094,33 +8982,6 @@
         "description": "社融存量期末值（万亿元）"
       }
     ]
-  },
-  "cpi": {
-    "name": "cpi",
-    "description": "cpi 接口",
-    "category": "宏观经济",
-    "docId": 0,
-    "parameters": [],
-    "outputFields": [],
-    "requiresPoints": null
-  },
-  "ppi": {
-    "name": "ppi",
-    "description": "ppi 接口",
-    "category": "宏观经济",
-    "docId": 0,
-    "parameters": [],
-    "outputFields": [],
-    "requiresPoints": null
-  },
-  "ppi_c": {
-    "name": "ppi_c",
-    "description": "ppi_c 接口",
-    "category": "宏观经济",
-    "docId": 0,
-    "parameters": [],
-    "outputFields": [],
-    "requiresPoints": null
   },
   "shibor": {
     "name": "shibor",
@@ -12353,45 +12214,6 @@
       }
     ]
   },
-  "hsgt_top": {
-    "name": "hsgt_top",
-    "description": "获取沪股通、深股通每日前十大成交详细数据，每天18~20点之间完成当日更新",
-    "category": "股票数据",
-    "docId": 48,
-    "parameters": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "required": false,
-        "description": "股票代码（二选一）"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "required": false,
-        "description": "交易日期（二选一）"
-      },
-      {
-        "name": "start_date",
-        "type": "str",
-        "required": false,
-        "description": "开始日期"
-      },
-      {
-        "name": "end_date",
-        "type": "str",
-        "required": false,
-        "description": "结束日期"
-      },
-      {
-        "name": "market_type",
-        "type": "str",
-        "required": false,
-        "description": "市场类型（1：沪市 3：深市）"
-      }
-    ],
-    "outputFields": []
-  },
   "ggt_daily": {
     "name": "ggt_daily",
     "description": "获取港股通每日成交信息，数据从2014年开始限量：单次最大1000，总量数据不限制积分：用户积2000积分可调取，5000积分以上频次相对较高，请自行提高积分，具体请参阅积分获取办法",
@@ -12531,24 +12353,6 @@
         "description": "总卖出成交笔数（万笔）"
       }
     ]
-  },
-  "concept": {
-    "name": "concept",
-    "description": "concept 接口",
-    "category": "其他",
-    "docId": 0,
-    "parameters": [],
-    "outputFields": [],
-    "requiresPoints": null
-  },
-  "concept_detail": {
-    "name": "concept_detail",
-    "description": "concept_detail 接口",
-    "category": "其他",
-    "docId": 0,
-    "parameters": [],
-    "outputFields": [],
-    "requiresPoints": null
   },
   "ths_member": {
     "name": "ths_member",
@@ -13576,64 +13380,6 @@
         "type": "float",
         "defaultShow": true,
         "description": "流通市值(亿)"
-      }
-    ]
-  },
-  "kpl_concept": {
-    "name": "kpl_concept",
-    "description": "获取开盘啦概念题材列表，每天盘后更新限量：单次最大5000条，可根据日期循环获取历史数据积分：5000积分可提取数据，具体请参阅积分获取办法",
-    "category": "其他",
-    "docId": 350,
-    "parameters": [
-      {
-        "name": "trade_date",
-        "type": "str",
-        "required": false,
-        "description": "交易日期（YYYYMMDD格式）"
-      },
-      {
-        "name": "ts_code",
-        "type": "str",
-        "required": false,
-        "description": "题材代码（xxxxxx.KP格式）"
-      },
-      {
-        "name": "name",
-        "type": "str",
-        "required": false,
-        "description": "题材名称"
-      }
-    ],
-    "outputFields": [
-      {
-        "name": "trade_date",
-        "type": "str",
-        "defaultShow": true,
-        "description": "交易日期"
-      },
-      {
-        "name": "ts_code",
-        "type": "str",
-        "defaultShow": true,
-        "description": "题材代码"
-      },
-      {
-        "name": "name",
-        "type": "str",
-        "defaultShow": true,
-        "description": "题材名称"
-      },
-      {
-        "name": "z_t_num",
-        "type": "None",
-        "defaultShow": true,
-        "description": "涨停数量"
-      },
-      {
-        "name": "up_num",
-        "type": "str",
-        "defaultShow": true,
-        "description": "排名上升位数"
       }
     ]
   },
@@ -15005,45 +14751,6 @@
       }
     ]
   },
-  "top": {
-    "name": "top",
-    "description": "获取上市公司前十大股东数据，包括持有数量和比例等信息积分：需2000积分以上才可以调取本接口，5000积分以上频次会更高",
-    "category": "股票数据",
-    "docId": 61,
-    "parameters": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "required": true,
-        "description": "TS代码"
-      },
-      {
-        "name": "period",
-        "type": "str",
-        "required": false,
-        "description": "报告期（YYYYMMDD格式，一般为每个季度最后一天）"
-      },
-      {
-        "name": "ann_date",
-        "type": "str",
-        "required": false,
-        "description": "公告日期"
-      },
-      {
-        "name": "start_date",
-        "type": "str",
-        "required": false,
-        "description": "报告期开始日期"
-      },
-      {
-        "name": "end_date",
-        "type": "str",
-        "required": false,
-        "description": "报告期结束日期"
-      }
-    ],
-    "outputFields": []
-  },
   "bak_basic": {
     "name": "bak_basic",
     "description": "获取备用基础列表，数据从2016年开始限量：单次最大7000条，可以根据日期参数循环获取历史，正式权限需要5000积分。",
@@ -15585,215 +15292,6 @@
         "type": "float",
         "defaultShow": true,
         "description": "成交量（亿股）"
-      }
-    ]
-  },
-  "irm_qa_sh": {
-    "name": "irm_qa_sh",
-    "description": "获取上交所e互动董秘问答文本数据。上证e互动是由上海证券交易所建立、上海证券市场所有参与主体无偿使用的沟通平台,旨在引导和促进上市公司、投资者等各市场参与主体之间的信息沟通,构建集中、便捷的互动渠道。本接口数据记录了以上沟通问答的文本数据。限量：单次请求最大返回3000行数据，可根据股票代码，日期等参数循环提取全部数据权限：用户后120积分可以试用，正式权限为10000积分，或申请单独开权限，请参考权限说明",
-    "category": "股票数据",
-    "docId": 366,
-    "parameters": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "required": false,
-        "description": "股票代码"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "required": false,
-        "description": "交易日期（格式YYYYMMDD，下同）"
-      },
-      {
-        "name": "start_date",
-        "type": "str",
-        "required": false,
-        "description": "开始日期"
-      },
-      {
-        "name": "end_date",
-        "type": "str",
-        "required": false,
-        "description": "结束日期"
-      },
-      {
-        "name": "pub_date",
-        "type": "str",
-        "required": false,
-        "description": "发布开始日期(格式：2025-06-03 16:43:03)"
-      },
-      {
-        "name": "pub_date",
-        "type": "str",
-        "required": false,
-        "description": "发布结束日期(格式：2025-06-03 18:43:23)"
-      }
-    ],
-    "outputFields": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "defaultShow": true,
-        "description": "股票代码"
-      },
-      {
-        "name": "name",
-        "type": "str",
-        "defaultShow": true,
-        "description": "公司名称"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "defaultShow": true,
-        "description": "日期"
-      },
-      {
-        "name": "q",
-        "type": "str",
-        "defaultShow": true,
-        "description": "问题"
-      },
-      {
-        "name": "a",
-        "type": "str",
-        "defaultShow": true,
-        "description": "回复"
-      },
-      {
-        "name": "pub_time",
-        "type": "datetime",
-        "defaultShow": true,
-        "description": "回复时间"
-      }
-    ]
-  },
-  "ggt_top": {
-    "name": "ggt_top",
-    "description": "获取港股通每日成交数据，其中包括沪市、深市详细数据，每天18~20点之间完成当日更新",
-    "category": "股票数据",
-    "docId": 49,
-    "parameters": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "required": false,
-        "description": "股票代码（二选一）"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "required": false,
-        "description": "交易日期（二选一）"
-      },
-      {
-        "name": "start_date",
-        "type": "str",
-        "required": false,
-        "description": "开始日期"
-      },
-      {
-        "name": "end_date",
-        "type": "str",
-        "required": false,
-        "description": "结束日期"
-      },
-      {
-        "name": "market_type",
-        "type": "str",
-        "required": false,
-        "description": "市场类型 2：港股通（沪） 4：港股通（深）"
-      }
-    ],
-    "outputFields": []
-  },
-  "irm_qa_sz": {
-    "name": "irm_qa_sz",
-    "description": "互动易是由深交所官方推出,供投资者与上市公司直接沟通的平台,一站式公司资讯汇集,提供第一手的互动问答、投资者关系信息、公司声音等内容。限量：单次请求最大返回3000行数据，可根据股票代码，日期等参数循环提取全部数据权限：用户后120积分可以试用，正式权限为10000积分，或申请单独开权限，请参考权限说明",
-    "category": "股票数据",
-    "docId": 367,
-    "parameters": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "required": false,
-        "description": "股票代码"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "required": false,
-        "description": "交易日期（格式YYYYMMDD，下同）"
-      },
-      {
-        "name": "start_date",
-        "type": "str",
-        "required": false,
-        "description": "开始日期"
-      },
-      {
-        "name": "end_date",
-        "type": "str",
-        "required": false,
-        "description": "结束日期"
-      },
-      {
-        "name": "pub_date",
-        "type": "str",
-        "required": false,
-        "description": "发布开始日期(格式：2025-06-03 16:43:03)"
-      },
-      {
-        "name": "pub_date",
-        "type": "str",
-        "required": false,
-        "description": "发布结束日期(格式：2025-06-03 18:43:23)"
-      }
-    ],
-    "outputFields": [
-      {
-        "name": "ts_code",
-        "type": "str",
-        "defaultShow": true,
-        "description": "股票代码"
-      },
-      {
-        "name": "name",
-        "type": "str",
-        "defaultShow": true,
-        "description": "公司名称"
-      },
-      {
-        "name": "trade_date",
-        "type": "str",
-        "defaultShow": true,
-        "description": "发布时间"
-      },
-      {
-        "name": "q",
-        "type": "str",
-        "defaultShow": true,
-        "description": "问题"
-      },
-      {
-        "name": "a",
-        "type": "str",
-        "defaultShow": true,
-        "description": "回复"
-      },
-      {
-        "name": "pub_time",
-        "type": "str",
-        "defaultShow": true,
-        "description": "答复时间"
-      },
-      {
-        "name": "industry",
-        "type": "str",
-        "defaultShow": true,
-        "description": "涉及行业"
       }
     ]
   },
